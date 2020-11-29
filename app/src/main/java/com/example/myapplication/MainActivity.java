@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.app.Activity;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,8 +11,11 @@ import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
 
-public class MainActivity extends AppCompatActivity {
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
+public class MainActivity extends AppCompatActivity {
+    public ArrayList<String> logs=new ArrayList<>(0);
     protected SpeedTestSocket init(final TextView status){
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
 // add a listener to wait for speedtest completion and progress
@@ -19,39 +24,54 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompletion(SpeedTestReport report) {
                 // called when download/upload is complete
-                status.setText("[COMPLETED] rate in octet/s : " + report.getTransferRateOctet()+'\n');
-                status.setText(status.getText()+"[COMPLETED] rate in bit/s   : " + report.getTransferRateBit()+'\n');
+                logs.add("[COMPLETED] rate in octet/s : " + report.getTransferRateOctet()+'\n');
+                logs.add("[COMPLETED] rate in bit/s   : " + report.getTransferRateBit()+'\n');
             }
 
             @Override
             public void onError(SpeedTestError speedTestError, String errorMessage) {
-                // called when a download/upload error occur
+                System.out.println(errorMessage);
             }
 
             @Override
             public void onProgress(float percent, SpeedTestReport report) {
                 // called to notify download/upload progress
-                status.setText("[PROGRESS] progress : " + percent + "%\n");
-                status.setText(status.getText()+"[PROGRESS] rate in octet/s : " + report.getTransferRateOctet()+'\n');
-                status.setText(status.getText()+"[PROGRESS] rate in bit/s   : " + report.getTransferRateBit());
+                System.out.println("running");
+                System.out.println("[PROGRESS] progress : " + percent + "%\n");
+                System.out.println("[PROGRESS] rate in octet/s : " + report.getTransferRateOctet()+'\n');
+                System.out.println("[PROGRESS] rate in bit/s   : " + report.getTransferRateBit());
+
             }
         });
         return speedTestSocket;
     }
     SpeedTestSocket speedTestSocket;
-    public void speedTest(View view){
-        //speedTestSocket.startFixedDownload("http://ipv4.scaleway.testdebit.info/10G.iso", 10000);
-        TextView status=(TextView) view.getRootView().findViewById(R.id.Layout);
-        status.setText("hi");
-    }
+    private BigDecimal downloadSpeed;
+    private TextView status;
+    private downloadThread download;
+    public void speedTest(View view) throws InterruptedException {
+        download=new downloadThread(speedTestSocket,this);
+        download.start();
+        }
+        protected void update(String s,boolean concat){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this){
+                    if (concat) {
+                        status.setText(status.getText()+"\n"+s);
+                    }else {
+                        status.setText(s);
+                    }
+                }
+            }
+        });
+        }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView status=(TextView) findViewById(R.id.Layout);
+        status= findViewById(R.id.Status);
         speedTestSocket=init(status);
-        for (int i = 0; true; i++) {
-            status.setText(i);
-        }
-        }
     }
+        }
