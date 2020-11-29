@@ -1,7 +1,5 @@
 package com.example.myapplication;
 
-import android.app.Activity;
-import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public ArrayList<String> logs=new ArrayList<>(0);
-    protected SpeedTestSocket init(final TextView status){
+    protected SpeedTestSocket init(){
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
 // add a listener to wait for speedtest completion and progress
         speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
@@ -24,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompletion(SpeedTestReport report) {
                 // called when download/upload is complete
-                logs.add("[COMPLETED] rate in octet/s : " + report.getTransferRateOctet()+'\n');
-                logs.add("[COMPLETED] rate in bit/s   : " + report.getTransferRateBit()+'\n');
+                System.out.println("[COMPLETED] rate in octet/s : " + report.getTransferRateOctet()+'\n');
+                System.out.println("[COMPLETED] rate in bit/s   : " + report.getTransferRateBit()+'\n');
             }
 
             @Override
@@ -45,12 +43,11 @@ public class MainActivity extends AppCompatActivity {
         });
         return speedTestSocket;
     }
-    SpeedTestSocket speedTestSocket;
-    private BigDecimal downloadSpeed;
+    protected SpeedTestSocket downloadSocket,uploadSocket;
     private TextView status;
     private downloadThread download;
     public void speedTest(View view) throws InterruptedException {
-        download=new downloadThread(speedTestSocket,this);
+        download=new downloadThread(downloadSocket,this);
         download.start();
         }
         protected void update(String s,boolean concat){
@@ -72,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         status= findViewById(R.id.Status);
-        speedTestSocket=init(status);
+        downloadSocket=init();
+        uploadSocket=init();
     }
         }
