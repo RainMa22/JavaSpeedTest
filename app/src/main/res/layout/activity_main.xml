@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity" android:id="@+id/Layout">
     <Button
             android:text="@string/start"
             android:layout_width="wrap_content"
@@ -17,13 +17,13 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="160dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" android:onClick="speedTest"/>
     <TextView
-            android:text="@string/textview"
-            android:layout_width="316dp"
-            android:layout_height="345dp" android:id="@+id/Status"
-            android:visibility="visible" tools:visibility="visible" android:layout_marginEnd="47dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="48dp" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="79dp" android:layout_marginBottom="181dp"
-            app:layout_constraintBottom_toTopOf="@+id/button" app:layout_constraintVertical_bias="0.48000002"
+            android:text="TextView"
+            android:layout_width="272dp"
+            android:layout_height="494dp" android:id="@+id/Status"
+            android:layout_marginBottom="70dp"
+            app:layout_constraintBottom_toTopOf="@+id/button" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="52dp" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="41dp" android:layout_marginEnd="87dp" app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="visible" tools:visibility="visible"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,8 +10,8 @@ import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
 
 public class MainActivity extends AppCompatActivity {
-    final TextView status=findViewById(R.id.Status);
-    /*protected SpeedTestSocket init(){
+
+    protected SpeedTestSocket init(final TextView status){
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
 // add a listener to wait for speedtest completion and progress
         speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
@@ -40,18 +40,18 @@ public class MainActivity extends AppCompatActivity {
     }
     SpeedTestSocket speedTestSocket;
     public void speedTest(View view){
-        speedTestSocket.startFixedDownload("http://ipv4.scaleway.testdebit.info/10G.iso", 10000);
-
-    }*/
+        //speedTestSocket.startFixedDownload("http://ipv4.scaleway.testdebit.info/10G.iso", 10000);
+        TextView status=(TextView) view.getRootView().findViewById(R.id.Layout);
+        status.setText("hi");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //speedTestSocket=init();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        TextView status=(TextView) findViewById(R.id.Layout);
+        speedTestSocket=init(status);
+        for (int i = 0; true; i++) {
+            status.setText(i);
+        }
         }
     }
-}
