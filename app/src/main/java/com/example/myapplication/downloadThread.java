@@ -99,6 +99,8 @@ class pingThread extends Thread {
         ArrayList<String> inputs = new ArrayList<>(0);
         Process pinger = null;
         BufferedReader br = null;
+        boolean b=location!="ovh.net";
+        if (b)
         try {
             pinger = runtime.exec("ping -c 4 "+location);
             br = new BufferedReader(new InputStreamReader(pinger.getInputStream()));
@@ -127,8 +129,10 @@ class pingThread extends Thread {
         }
         d/=temp.size();
         finalMessage="ping: "+d+"ms";
-        if (temp.size()==0){
+        if (temp.size()==0&&b){
             finalMessage="pinging failed! please try again:(";
+        }else if (!b){
+            finalMessage="pinging not avaliable for the Fastest option.";
         }
         running = false;
     }

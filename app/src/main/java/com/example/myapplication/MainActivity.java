@@ -75,19 +75,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         locations= new String[]{
+                "Fastest Avaliable",
                 "Beauharnois, Canada",
                 "Vitry-sur-Seine, France",
-                "Singapore"
+                "Singapore",
+                "Sydney, Australia",
+                "Tokyo, Japan",
+                "Toronto, Canada",
+                "London, Britain",
+                "Dallas, America",
+                "Frankfurt, Germany",
+                "Mumbai, India"
         };
         servers= new String[]{
+                "ovh.net",
                 "bhs.proof.ovh.net",
                 "ipv4.scaleway.testdebit.info",
-                "speedtest-sgp.apac-tools.ovh"
+                "speedtest-sgp.apac-tools.ovh",
+                "speedtest-syd.apac-tools.ovh",
+                "speedtest.tokyo2.linode.com",
+                "speedtest.toronto1.linode.com",
+                "speedtest.london.linode.com",
+                "speedtest.dallas.linode.com",
+                "speedtest.frankfurt.linode.com",
+                "speedtest.mumbai1.linode.com"
         };
         files= new String[]{
                 "/files/10Gb.dat",
+                "/files/10Gb.dat",
                 "/10G.iso",
-                "/files/10Gb.dat"
+                "/files/10Gb.dat",
+                "/files/10Gb.dat",
+                "/1GB-tokyo.bin",
+                "/1GB-toronto.bin",
+                "/1GB-london.bin",
+                "/1GB-dallas.bin",
+                "/1GB-frankfurt.bin",
+                "/1GB-mumbai.bin"
         };
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
