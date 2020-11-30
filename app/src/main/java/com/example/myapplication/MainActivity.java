@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,8 +48,14 @@ public class MainActivity extends AppCompatActivity {
     protected SpeedTestSocket downloadSocket,uploadSocket;
     private TextView status;
     private downloadThread download;
+    private Spinner spinner;
+    String[] servers,locations,files;
     public void speedTest(View view) throws InterruptedException {
-        download=new downloadThread(downloadSocket,this);
+        int io=0;
+        for (int i = 0; i < locations.length; i++) {
+            if (locations[i]==spinner.getSelectedItem())io=i;
+        }
+        download=new downloadThread(downloadSocket,this,new String[]{servers[io],files[io]});
         download.start();
         }
         protected void update(String s,boolean concat){
@@ -66,8 +74,27 @@ public class MainActivity extends AppCompatActivity {
         }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        locations= new String[]{
+                "Beauharnois, Canada",
+                "Vitry-sur-Seine, France",
+                "Singapore"
+        };
+        servers= new String[]{
+                "bhs.proof.ovh.net",
+                "ipv4.scaleway.testdebit.info",
+                "speedtest-sgp.apac-tools.ovh"
+        };
+        files= new String[]{
+                "/files/10Gb.dat",
+                "/10G.iso",
+                "/files/10Gb.dat"
+        };
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        spinner=findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,R.layout.support_simple_spinner_dropdown_item,locations);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         status= findViewById(R.id.Status);
         downloadSocket=init();
         uploadSocket=init();
